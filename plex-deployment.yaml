@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex-deploy
+  namespace: plex
+  labels:
+    app: plex
+  annotations:
+    # k8s.v1.cni.cncf.io/networks: homeland # macvlan network
+    openshift.io/scc: anyuid
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+      annotations:
+    spec:
+      serviceAccountName: plex-sa
+      hostname: ocp-plex
+      containers:
+      - name: plex
+        image: shaker242/plex 
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+        ports:
+          - name: http
+            containerPort: 32400
+          - name: https
+            containerPort: 32443
+        env:
+        - name: TZ
+          value: "America/New_York"
+        - name: PLEX_CLAIM
+          value: claim-wUkbD61zbn_QyQaZakKU
+        - name: ALLOWED_NETWORKS #skip logins from homeland
+          value: 192.168.11.0/24,172.16.1.0/26

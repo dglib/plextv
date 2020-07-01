@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-svc
+  namespace: plex
+  labels:
+    app: plex
+  annotations:
+spec:
+  type: NodePort
+  ports:
+    - name: plex
+      port: 32400
+      protocol: TCP
+      targetPort: 32400
+      nodePort: 32400
+    - name: http
+      port: 80
+      targetPort: 32400
+    - name: https
+      port: 443
+      targetPort: 32443
+  selector:
+    app: plex

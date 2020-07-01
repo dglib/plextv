@@ -1,0 +1,47 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: plex-role
+  namespace: plex
+  labels:
+    app: plex
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/attach
+  - pods/exec
+  - pods/portforward
+  - pods/proxy
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: plex-rolebinding
+  namespace: plex
+  labels:
+    app: plex
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: plex-role
+subjects:
+- kind: ServiceAccount
+  name: plex-sa
+  namespace: plex
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: plex-sa
+  namespace: plex
