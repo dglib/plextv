@@ -1,3 +1,4 @@
+### I am experimenting, you can ignore this file as it is not used in this deployment.
 
 create the namespace "plex" \
 `oc create ns plex`
