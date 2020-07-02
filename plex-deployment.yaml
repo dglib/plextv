@@ -6,7 +6,7 @@ metadata:
   labels:
     app: plex
   annotations:
-    # k8s.v1.cni.cncf.io/networks: homeland # macvlan network
+    # k8s.v1.cni.cncf.io/networks: homeland # ignore macvlan network
     openshift.io/scc: anyuid
 spec:
   replicas: 1
@@ -22,7 +22,7 @@ spec:
       annotations:
     spec:
       serviceAccountName: plex-sa
-      hostname: ocp-plex
+      hostname: ocp-plex # this hostname needs to match the hostname in your route, ie, 'ocp-plex.apps.openshift.redcloud.land'
       containers:
       - name: plex
         image: shaker242/plex 
@@ -49,5 +49,12 @@ spec:
           value: "America/New_York"
         - name: PLEX_CLAIM
           value: claim-wUkbD61zbn_QyQaZakKU # claims only last 4 mins
-        - name: ALLOWED_NETWORKS #skip logins from homeland
+        - name: ALLOWED_NETWORKS #skip logins from trusted networks
           value: 192.168.11.0/24,172.16.1.0/26
+        volumeMounts:
+          - name: config
+            persistentVolumeClaim:
+              claimName: plex-data
+            storageClass: 
+
+          
