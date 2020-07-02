@@ -16,9 +16,10 @@ spec:
       nodePort: 32400
     - name: http
       port: 80
-      targetPort: 32400
+      targetPort: plex
     - name: https
       port: 443
+      protocol: TCP
       targetPort: 32443
   selector:
     app: plex

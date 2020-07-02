@@ -1,0 +1,65 @@
+# I am defining two volumes, one to store the configuration information and the other to store all the media (data)
+# Transcoding will be performed in memory (tmpfs)
+# **this is a test 
+
+## plex /config
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-config
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  nfs:
+    path: /nfs/manual/plex/config
+    server: 172.16.1.5
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: "v1"
+kind: "PersistentVolumeClaim"
+metadata:
+  name: "pvc-plex-config"
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ""
+  volumeMode: Filesystem
+
+### plex /data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-data
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  nfs:
+    path: /nfs/manual/plex/data
+    server: 172.16.1.5
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: "v1"
+kind: "PersistentVolumeClaim"
+metadata:
+  name: "pvc-plex-data"
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: ""
+  volumeMode: Filesystem
