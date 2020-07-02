@@ -40,3 +40,6 @@ Notes:
 8. Remote access, for this out of scope item you will have to create a port forward from your wan/ip to this container... mine goes like this \
 WAN/IP -> pfSense port forward (port WAN/22400 -> port LAN LB/32400 NodePort) -> LB 32400 to Node:32400 -> Pod/Container:32400 \
 The external port 22400 is then manually set in Plex's remote settings.
+
+#### To do: \
+I need to update the nfs to squash everyone to nobody on /data, this should help remote mouting the nfs share to upload content.
