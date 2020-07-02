@@ -31,4 +31,12 @@ Notes:
 5. Link the services to our Deployment \
 `oc create -f plex-services.yaml`
 
-6. **moresteps? 
+6. Once everything checks out, you will have to load your claim key and reapply the deployment. \
+`oc apply -f plex-deployment.yaml`
+
+7. Plex is up, volumes are connected but now you'll need to install your routes and configure your media server. \
+`oc create -f plex-routes.yaml`
+
+8. Remote access, for this out of scope item you will have to create a port forward from your wan/ip to this container... mine goes like this \
+WAN/IP -> pfSense port forward (port WAN/22400 -> port LAN LB/32400 NodePort) -> LB 32400 to Node:32400 -> Pod/Container:32400 \
+The external port 22400 is then manually set in Plex's remote settings.
