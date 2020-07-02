@@ -41,5 +41,12 @@ Notes:
 WAN/IP -> pfSense port forward (port WAN/22400 -> port LAN LB/32400 NodePort) -> LB 32400 to Node:32400 -> Pod/Container:32400 \
 The external port 22400 is then manually set in Plex's remote settings.
 
-#### To do: \
-I need to update the nfs to squash everyone to nobody on /data, this should help remote mouting the nfs share to upload content.
+9. Example: NFS Exports
+```
+/plex/config	*(rw,sync,no_subtree_check,no_wdelay,no_root_squash,insecure)
+/plex/data		*(rw,sync,no_subtree_check,no_wdelay,all_squash,anonuid=65534,anongid=65534,insecure)	
+```
+
+10. Example: Directory Permissions
+`chown nobody:nogroup /plex/data`
+`chown root:root /plex/config`
