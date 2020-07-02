@@ -28,4 +28,4 @@ Notes:
 5. **services \
 `oc create -f plex-services.yaml`
 
-6. **moresteps? \
+6. **moresteps? 
