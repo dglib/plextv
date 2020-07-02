@@ -22,10 +22,13 @@ Notes:
 3. Apply scc-anyuid to your SA in the plex namespace\
 `oc adm policy add-scc-to-user anyuid -z plex-sa -n plex`
 
-4. **deployment \
+4. Create the PVC's for /config /data \
+`oc create -f plex-pvc.yaml`
+
+5. Deploy Plex \
 `oc create -f plex-deployment.yaml`
 
-5. **services \
+5. Link the services to our Deployment \
 `oc create -f plex-services.yaml`
 
 6. **moresteps? 

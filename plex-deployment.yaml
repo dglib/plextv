@@ -27,6 +27,10 @@ spec:
       - name: plex
         image: shaker242/plex 
         imagePullPolicy: Always
+        # resources:
+        #     limits:
+        #       cpu: 500m
+        #       memory: 1Gi
         readinessProbe:
           httpGet:
             path: /identity
@@ -52,9 +56,20 @@ spec:
         - name: ALLOWED_NETWORKS #skip logins from trusted networks
           value: 192.168.11.0/24,172.16.1.0/26
         volumeMounts:
-          - name: config
-            persistentVolumeClaim:
-              claimName: plex-data
-            storageClass: 
-
-          
+          - name: plex-config
+            mountPath: /config
+          - name: plex-transcode
+            mountPath: /transcode
+          - name: plex-data
+            mountPath: /data
+      volumes:
+      - name: plex-config
+        persistentVolumeClaim:
+          claimName: pvc-plex-config
+      - name: plex-transcode
+        emptyDir:
+          medium: Memory
+          sizeLimit: 2Gi
+      - name: plex-data
+        persistentVolumeClaim:
+          claimName: pvc-plex-data
