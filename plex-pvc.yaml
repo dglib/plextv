@@ -1,0 +1,29 @@
+# I am defining two volumes, one to store the configuration information and the other to store all the media (data)
+# Transcoding will be performed in memory (tmpfs)
+# **this is a test 
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-plex-config
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: storagecluster-cephfs # using OCS 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-plex-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: storagecluster-ceph-rbd # using OCS
