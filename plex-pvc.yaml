@@ -1,6 +1,6 @@
-# I am defining two volumes, one to store the configuration information and the other to store all the media (data)
-# Transcoding will be performed in memory (tmpfs)
-# **this is a test 
+# # I am defining two volumes, one to store the configuration information and the other to store all the media (data)
+# # Transcoding will be performed in memory (tmpfs)
+# # **this is a test 
 
 ## plex /config
 ---
@@ -46,7 +46,7 @@ spec:
   capacity:
     storage: 20Gi
   nfs:
-    path: /nfs/manual/plex/data
+    path: /registry/plex/data
     server: 172.16.1.5
   persistentVolumeReclaimPolicy: Retain
 ---
