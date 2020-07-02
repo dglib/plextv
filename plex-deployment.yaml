@@ -48,6 +48,6 @@ spec:
         - name: TZ
           value: "America/New_York"
         - name: PLEX_CLAIM
-          value: claim-wUkbD61zbn_QyQaZakKU
+          value: claim-wUkbD61zbn_QyQaZakKU # claims only last 4 mins
         - name: ALLOWED_NETWORKS #skip logins from homeland
           value: 192.168.11.0/24,172.16.1.0/26
