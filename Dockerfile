@@ -19,7 +19,7 @@ RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / \
     && useradd -d /apps -s /bin/false abc \
     && useradd -U -d /config -s /bin/false -u 10001 plex \
     && usermod -G users plex \
-    && mkdir -p /config /transcode /data
+    && mkdir -p /config /transcode /media
 
 # INSTALL PLEX
 RUN curl -o /tmp/plexmediaserver.deb -L "${PLEX_INSTALL}" \
@@ -34,7 +34,7 @@ RUN apt-get -y autoremove \
     && rm -rf var/tmp/*
 
 EXPOSE 32400/tcp 3005/tcp 8324/tcp 32469/tcp 1900/udp 32410/udp 32412/udp 32413/udp 32414/udp
-VOLUME /config /transcode /data
+VOLUME /config /transcode /media
 
 ENV VERSION=latest \
     CHANGE_DIR_RIGHTS="false" \

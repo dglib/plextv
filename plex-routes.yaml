@@ -6,7 +6,7 @@ metadata:
   name: plex-server
   namespace: plex
 spec:
-  host: ocp-plex.apps.openshift.redcloud.land #fqdn
+  host: ocp-plex.redcloud.land #fqdn
   port:
     targetPort: plex
   to:
@@ -25,7 +25,7 @@ metadata:
   name: secure-plex
   namespace: plex
 spec:
-  host: secure-plex-plex.apps.openshift.redcloud.land
+  host: secure-plex.apps.openshift.redcloud.land
   port:
     targetPort: https
   tls:

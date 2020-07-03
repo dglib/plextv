@@ -25,7 +25,7 @@ spec:
       hostname: ocp-plex # this hostname needs to match the hostname in your route, ie, 'ocp-plex.apps.openshift.redcloud.land'
       containers:
       - name: plex
-        image: shaker242/plex 
+        image: shaker242/plex:07.03
         imagePullPolicy: Always
         # resources:
         #     limits:
@@ -54,7 +54,7 @@ spec:
         - name: TZ
           value: "America/New_York"
         - name: PLEX_CLAIM
-          value: claim-ppY6aAZRxx5zWXEUb9X4 # claims only last 4 mins
+          value: claim-igRn1fzAhWXEG1oJePtT # claims only last 4 mins
         - name: ALLOWED_NETWORKS #skip logins from trusted networks
           value: 192.168.11.0/24,172.16.1.0/26
         volumeMounts:
@@ -62,16 +62,18 @@ spec:
             mountPath: /config
           - name: plex-transcode
             mountPath: /transcode
-          - name: plex-data
-            mountPath: /data
+          - name: plex-media
+            mountPath: /media
       volumes:
       - name: plex-config
         persistentVolumeClaim:
           claimName: pvc-plex-config
       - name: plex-transcode
-        emptyDir:
-          medium: Memory
-          sizeLimit: 2Gi
-      - name: plex-data
         persistentVolumeClaim:
-          claimName: pvc-plex-data
+          claimName: pvc-plex-transcode
+        # emptyDir:
+        #   medium: Memory
+        #   sizeLimit: 2Gi
+      - name: plex-media
+        persistentVolumeClaim:
+          claimName: pvc-plex-media

@@ -2,7 +2,7 @@
 # Transcoding will be performed in memory (tmpfs)
 # **this is a test 
 
-## plex /config
+## plex /config - place on the local nfs server's ssd drive, only needs >1g
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -15,8 +15,8 @@ spec:
   capacity:
     storage: 1Gi
   nfs:
-    path: /nfs/manual/plex/config
-    server: 172.16.1.5
+    path: /plex/config
+    server: 172.16.1.6
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: "v1"
@@ -33,33 +33,65 @@ spec:
   storageClassName: ""
   volumeMode: Filesystem
 
-### plex /data
+### plex /media - placed on a NL volume
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: plex-data
+  name: plex-media
   namespace: plex
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   capacity:
-    storage: 20Gi
+    storage: 250Gi
   nfs:
-    path: /nfs/manual/plex/data
-    server: 172.16.1.5
+    path: /plex/media
+    server: 172.16.1.6
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: "v1"
 kind: "PersistentVolumeClaim"
 metadata:
-  name: "pvc-plex-data"
+  name: "pvc-plex-media"
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 250Gi
+  storageClassName: ""
+  volumeMode: Filesystem
+
+### plex /transcode - placed on a NVMe volume
+# This is OPTIONAL as putting it in memory hogged up about 10g of RAM, using ssd would be fine.
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-transcode
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 25Gi
+  nfs:
+    path: /plex/transcode
+    server: 172.16.1.6
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: "v1"
+kind: "PersistentVolumeClaim"
+metadata:
+  name: "pvc-plex-transcode"
   namespace: plex
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
+      storage: 25Gi
   storageClassName: ""
   volumeMode: Filesystem
