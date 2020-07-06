@@ -23,7 +23,6 @@ spec:
     spec:
       serviceAccountName: plex-sa
       hostname: ocp-plex
-      subdomain: redcloud.land
       containers:
       - name: plex
         image: shaker242/plex:07.03
