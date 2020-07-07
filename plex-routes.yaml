@@ -3,35 +3,51 @@ kind: Route
 metadata:
   labels:
     app: plex
-  name: plex-server
+  name: ocp-plex
   namespace: plex
 spec:
-  host: ocp-plex.redcloud.land #fqdn
+  host: ocp-plex.redcloud.land
   port:
     targetPort: plex
   to:
     kind: Service
-    name: plex-svc
+    name: plex-port
     weight: 100
   wildcardPolicy: None
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  annotations:
-    openshift.io/host.generated: "true"
   labels:
     app: plex
-  name: secure-plex
+  name: http
   namespace: plex
 spec:
-  host: secure-plex.apps.openshift.redcloud.land
+  host: http-plex.apps.openshift.redcloud.land
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: plex-web
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: plex
+  name: https
+  namespace: plex
+spec:
+  host: https-plex.apps.openshift.redcloud.land
   port:
     targetPort: https
   tls:
+    insecureEdgeTerminationPolicy: None
     termination: passthrough
   to:
     kind: Service
-    name: plex-svc
+    name: plex-web
     weight: 100
   wildcardPolicy: None
