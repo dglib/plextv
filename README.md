@@ -22,8 +22,8 @@ Notes:
 3. Apply scc-anyuid to your SA in the plex namespace\
 `oc adm policy add-scc-to-user anyuid -z plex-sa -n plex`
 
-4. Create the PVC's for /config /media \
-`oc create -f plex-pvc.yaml`
+4. Create the PVC's for /config /media /transcode \
+`oc create -f plex-nfs.yaml`
 
 5. Deploy Plex \
 `oc create -f plex-deployment.yaml`
@@ -44,9 +44,11 @@ The external port 22400 is then manually set in Plex's remote settings.
 9. Example: NFS Exports
 ```
 /plex/config	*(rw,sync,no_subtree_check,no_wdelay,no_root_squash,insecure)
+/plex/transcode	*(rw,sync,no_subtree_check,no_wdelay,no_root_squash,insecure)
 /plex/media		*(rw,sync,no_subtree_check,no_wdelay,all_squash,anonuid=65534,anongid=65534,insecure)	
 ```
+*Note: Remote mount the nfs volume (nfsserver:/plex/media) to upload, download and delete content.
 
-10. Example: Directory Permissions
-`chown nobody:nogroup /plex/media`
-`chown root:root /plex/config`
+10. Example: Directory Permissions \
+`chown -R /plex` \
+`chown nobody:nogroup /plex/media` 

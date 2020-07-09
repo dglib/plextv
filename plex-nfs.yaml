@@ -65,7 +65,8 @@ spec:
   volumeMode: Filesystem
 
 ### plex /transcode - placed on a NVMe volume
-# This is OPTIONAL as putting it in memory hogged up about 10g of RAM, using ssd would be fine.
+# This is OPTIONAL as putting it in memory hogged up about 10g of RAM.
+# If you wish to use memory, I've left that setting in the plex-deployment.yaml.
 ---
 apiVersion: v1
 kind: PersistentVolume
