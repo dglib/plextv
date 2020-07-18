@@ -19,12 +19,13 @@ spec:
       labels:
         app: plex
       annotations:
+        k8s.v1.cni.cncf.io/networks: 'default/macvlan-net'
     spec:
       serviceAccountName: plex-sa
       hostname: ocp-plex
       containers:
       - name: plex
-        image: shaker242/plex:07.03
+        image: shaker242/plex:u18.04
         imagePullPolicy: Always
         # resources:
         #     limits:

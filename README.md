@@ -3,7 +3,7 @@ Running a Plex Media Server on OpenShift 4.x
 
 ### Build your image
 You can build your own image using my Dockerfile as a reference, or just pull the image I created as shaker242/plex:latest. \
-`podman build -t ORG/REPO:TAG .`
+`podman build -t ORG/REPO:TAG .` 
 
 Notes:
 1.  There is a section in the deployment for a 'claim' number... it only lasts 4 mins, I recommend deploying the environment without it to make sure everything is running. Once you have verified the plex pod is running to your liking, obtain your code from https://plex.tv/claim, put it in the deployment and just `oc apply -f plex-deployment.yaml`.
@@ -52,3 +52,5 @@ The external port 22400 is then manually set in Plex's remote settings.
 10. Example: Directory Permissions \
 `chown -R /plex` \
 `chown nobody:nogroup /plex/media` 
+
+## If you'd like to improve this, please submit a PR!
