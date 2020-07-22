@@ -1,0 +1,69 @@
+# I am defining two volumes, one to store the configuration information and the other to store all the media (data)
+# Transcoding will be performed in memory (tmpfs)
+# **this is a test 
+
+## plex /config - place on the local nfs server's ssd drive, only needs >1g
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-config
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  nfs:
+    path: /plex/config
+    server: 172.16.1.6
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: "v1"
+kind: "PersistentVolumeClaim"
+metadata:
+  name: "pvc-plexfs-config"
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ""
+  volumeMode: Filesystem
+
+### plex /media - placed on a NL volume
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-media
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 250Gi
+  nfs:
+    path: /plex/media
+    server: 172.16.1.6
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: "v1"
+kind: "PersistentVolumeClaim"
+metadata:
+  name: "pvc-plexfs-media"
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 250Gi
+  storageClassName: ""
+  volumeMode: Filesystem
+
+### plex /transcode - placed on a NVMe volume
+# This is OPTIONAL as putting it in memory hogged up about 10g of RAM.
+# If you wish to use memory, I've left that setting in the plex-deployment.yaml.

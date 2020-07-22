@@ -67,11 +67,11 @@ spec:
       volumes:
       - name: plex-config
         persistentVolumeClaim:
-          claimName: pvc-plex-config
+          claimName: pvc-plexfs-config
       # - name: plex-transcode
       #   emptyDir:
       #     medium: Memory
       #     sizeLimit: 2Gi
       - name: plex-media
         persistentVolumeClaim:
-          claimName: pvc-plex-media
+          claimName: pvc-plexfs-media

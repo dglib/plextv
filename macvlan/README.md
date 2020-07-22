@@ -69,6 +69,9 @@ A. Setting up your networking, I have to leave that mostly to you; however, I ha
 10. Create the Deploymnet. \
 `oc -n plex create -f plex-deployment.yaml`
 
+>Optional: Create an nfs share for your /media and /config \
+`oc -n plex create -f plex-nfs`
+
 *Since you are using MACVLAN, Services and Routes are not required.*
 
 11. Access your plex server for management: 192.168.11.200:32400/manage
