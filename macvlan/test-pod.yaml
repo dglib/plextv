@@ -4,9 +4,9 @@ metadata:
   name: test-pod
   namespace: plex
   annotations:
-    k8s.v1.cni.cncf.io/networks: 'default/macvlan-net'
+    k8s.v1.cni.cncf.io/networks: 'default/macvlan-plex'
 spec:
   containers:
   - name: test-pod
     command: ["/bin/sh", "-c", "sleep 2000000000000"]
-    image: alpine
+    image: centos

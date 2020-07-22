@@ -1,5 +1,8 @@
 # Plex Media Server
-Running a Plex Media Server on OpenShift 4.x
+Running a Plex Media Server on OpenShift 4.x 
+1. The Default Setup - this build covers deploying plex as a native container with a pod, service and route.
+2. The MACVLAN Setup - this build covers deploying plex as a native containter tied to a physical network and static ip address. \
+*Visit /macvlan for this setup*
 
 ### Build your image
 You can build your own image using my Dockerfile as a reference, or just pull the image I created as shaker242/plex:latest. \
@@ -11,7 +14,7 @@ Notes:
 3. You can find the latest version of the Plex Media Server here: https://www.plex.tv/media-server-downloads 
 
 
-## The Setup
+## The Default Setup
 
 1. Create your namespace/project \
 `oc new-project plex --display-name "Plex Media Server"`
@@ -19,7 +22,7 @@ Notes:
 2. Apply RBAC and create your SA \
 `oc create -f plex-rbac.yaml`
 
-3. Apply scc-anyuid to your SA in the plex namespace\
+3. Apply scc-anyuid to your SA in the plex namespace \
 `oc adm policy add-scc-to-user anyuid -z plex-sa -n plex`
 
 4. Create the PVC's for /config /media /transcode \

@@ -19,7 +19,7 @@ spec:
       labels:
         app: plex
       annotations:
-        k8s.v1.cni.cncf.io/networks: 'default/macvlan-net'
+        k8s.v1.cni.cncf.io/networks: 'default/macvlan-plex'
     spec:
       serviceAccountName: plex-sa
       hostname: ocp-plex
@@ -60,20 +60,18 @@ spec:
         volumeMounts:
           - name: plex-config
             mountPath: /config
-          - name: plex-transcode
-            mountPath: /transcode
+          # - name: plex-transcode
+          #   mountPath: /transcode
           - name: plex-media
             mountPath: /media
       volumes:
       - name: plex-config
         persistentVolumeClaim:
           claimName: pvc-plex-config
-      - name: plex-transcode
-        persistentVolumeClaim:
-          claimName: pvc-plex-transcode
-        # emptyDir:
-        #   medium: Memory
-        #   sizeLimit: 2Gi
+      # - name: plex-transcode
+      #   emptyDir:
+      #     medium: Memory
+      #     sizeLimit: 2Gi
       - name: plex-media
         persistentVolumeClaim:
           claimName: pvc-plex-media

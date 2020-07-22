@@ -67,32 +67,32 @@ spec:
 ### plex /transcode - placed on a NVMe volume
 # This is OPTIONAL as putting it in memory hogged up about 10g of RAM.
 # If you wish to use memory, I've left that setting in the plex-deployment.yaml.
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: plex-transcode
-  namespace: plex
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 25Gi
-  nfs:
-    path: /plex/transcode
-    server: 172.16.1.6
-  persistentVolumeReclaimPolicy: Retain
----
-apiVersion: "v1"
-kind: "PersistentVolumeClaim"
-metadata:
-  name: "pvc-plex-transcode"
-  namespace: plex
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 25Gi
-  storageClassName: ""
-  volumeMode: Filesystem
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: plex-transcode
+#   namespace: plex
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   capacity:
+#     storage: 25Gi
+#   nfs:
+#     path: /plex/transcode
+#     server: 172.16.1.6
+#   persistentVolumeReclaimPolicy: Retain
+# ---
+# apiVersion: "v1"
+# kind: "PersistentVolumeClaim"
+# metadata:
+#   name: "pvc-plex-transcode"
+#   namespace: plex
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 25Gi
+#   storageClassName: ""
+#   volumeMode: Filesystem
