@@ -91,7 +91,7 @@ Notes:
 2. Once everything checks out, you may have to load a new claim key and reapply the deployment. \
 `oc apply -f plex-deployment.yaml`
 3. Keeping your /media directory on NFS allows one way to remote mount and upload content.
-4. I have removed /transcode since I mostly use plex locallying; thus transcoding isn't used, to improve perfomanace consider /transcode (ing) in memory. See plex-deployment.yaml for an example.
+4. I have removed /transcode since I mostly use plex locallying; thus transcoding isn't used, to improve performance consider /transcode (ing) in memory or NVMe. See plex-deployment.yaml for an example.
 5. Each node in my cluster has a second interface (ens224) assigned to it, since DHCP is on this network, I remoted into to each node and reset the secondary interface to non-used IP assignments.
     ```
     Example:
