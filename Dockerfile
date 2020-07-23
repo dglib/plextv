@@ -6,7 +6,7 @@ PLEX_MEDIA_SERVER_USER="abc" \
 PLEX_MEDIA_SERVER_HOME="/usr/lib/plexmediaserver" \
 PLEX_MEDIA_SERVER_INFO_DEVICE=docker \
 PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS="6" \
-PLEX_INSTALL="https://downloads.plex.tv/plex-media-server-new/1.19.4.2935-79e214ead/debian/plexmediaserver_1.19.4.2935-79e214ead_amd64.deb" \
+PLEX_INSTALL="https://downloads.plex.tv/plex-media-server-new/1.19.5.3112-b23ab3896/debian/plexmediaserver_1.19.5.3112-b23ab3896_amd64.deb" \
 HOME="/config"
 
 ADD ["https://github.com/just-containers/s6-overlay/releases/download/v2.0.0.1/s6-overlay-amd64.tar.gz", \
