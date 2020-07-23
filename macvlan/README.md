@@ -11,10 +11,10 @@ Notes:
 3. You can find the latest version of the Plex Media Server here: https://www.plex.tv/media-server-downloads 
 
 Q. Why MACVLAN? \
-A. To improve quality by accessing the Plex Media Server directly, ie put the Pod on the same physical network as the device/s accessing plex. \
+A. To improve quality by accessing the Plex Media Server directly, ie put the Pod on the same physical network as the device/s accessing plex. 
 
 Q. Will remote access still work? \
-A. Yes. However, at this point I am only getting "Indirect" remote access to work. This means it is being proxied through Plex Web.
+A. Yes. With MACVLAN, I just put in a port-forward from my router to 32400 on the Plex Pod; this needs to be manually adjusted in the "Remote" settings of your Plex Media Server.
 
 Q. What is not covered in this README? \
 A. Setting up your networking, I have to leave that mostly to you; however, I have included some notes at the end that may help.
@@ -22,10 +22,10 @@ A. Setting up your networking, I have to leave that mostly to you; however, I ha
 ---
 ## The MACVLAN Setup
 
+> This configuration is used to set a static IP of 192.168.11.200 for the plex-pod, assigned to a separate interface (ens224) and not the default (ens192) used for the nodes / vxlan themselves. My setup is OCP 4.5 on VMware vSphere/ESXi 7.
+
 1. Install the macvlan addition network. \
 `oc edit networks.operator.openshift.io cluster`
-
-> This configuration is used to set a static IP of 192.168.11.200 for the plex-pod, assigned to a separate interface (ens224) and not the default (ens192) used for the nodes / vxlan themselves.
 
 ```
   additionalNetworks:
@@ -36,6 +36,8 @@ A. Setting up your networking, I have to leave that mostly to you; however, I ha
       "gateway": "192.168.11.1" } ] } }'
     type: Raw
 ```
+  *ens224 is a newly added secondary NIC assigned to my worker nodes.*
+
 2. Verify the new network exists in the default namespace. \
 `oc get network-attachment-definitions -n default` 
 
@@ -69,7 +71,7 @@ A. Setting up your networking, I have to leave that mostly to you; however, I ha
 10. Create the Deploymnet. \
 `oc -n plex create -f plex-deployment.yaml`
 
->Optional: Create an nfs share for your /media and /config \
+>Optional: Create a nfs share for your /media and /config \
 `oc -n plex create -f plex-nfs`
 
 *Since you are using MACVLAN, Services and Routes are not required.*
@@ -83,8 +85,6 @@ To Do:
 2. Detail setting up pfsense 1:1 NAT
 3. Detail setting up MACVLAN
 4. Consider/Test using a static IP vs DHCP
-5. Consider removing eth0 from the pod to prevent dual IP assignments, eth0=OpenShift SDN & net1=MACVLAN
-6. Pending the above, should I create a local service and route to access the pod for configuration?
 
 Notes:
 1. In this configuration I have set each of 3 lab nodes to use MACVLAN. If you choose to isolate MACVLAN to a specific node(s), use node lables on your deployment.

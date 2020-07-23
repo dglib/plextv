@@ -54,13 +54,16 @@ spec:
         - name: TZ
           value: "America/New_York"
         - name: PLEX_CLAIM
+          # Get your claim key, log into plex.tv with your account and visit plex.tv/claim, use the key below.
           value: claim-igRn1fzAhWXEG1oJePtT # claims only last 4 mins
-        - name: ALLOWED_NETWORKS #skip logins from trusted networks
+        - name: ALLOWED_NETWORKS # skip logins from trusted "local" networks
           value: 192.168.11.0/24,172.16.1.0/26
         volumeMounts:
           - name: plex-config
             mountPath: /config
           # - name: plex-transcode
+          #   # For remote sessions, it's good to use a transcoder; I put it in memory below.
+          #   # Note: although limted to 2Gi, I have still seen it grow upwards of 10Gi.
           #   mountPath: /transcode
           - name: plex-media
             mountPath: /media
