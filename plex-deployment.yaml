@@ -24,7 +24,7 @@ spec:
       hostname: ocp-plex
       containers:
       - name: plex
-        image: shaker242/plex:07.03
+        image: shaker242/plex:latest
         imagePullPolicy: Always
         # resources:
         #     limits:
