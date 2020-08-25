@@ -19,7 +19,8 @@ spec:
       labels:
         app: plex
       annotations:
-        k8s.v1.cni.cncf.io/networks: 'default/macvlan-plex'
+        k8s.v1.cni.cncf.io/networks: 'default/macvlan'
+        # v1.multus-cni.io/default-network: 'default/macvlan'
     spec:
       serviceAccountName: plex-sa
       hostname: ocp-plex
@@ -31,25 +32,9 @@ spec:
         #     limits:
         #       cpu: 500m
         #       memory: 1Gi
-        readinessProbe:
-          httpGet:
-            path: /identity
-            port: 32400
-          initialDelaySeconds: 15
-          timeoutSeconds: 5
-        livenessProbe:
-          httpGet:
-            path: /identity
-            port: 32400
-          initialDelaySeconds: 10
-          timeoutSeconds: 10
         ports:
           - name: plex
             containerPort: 32400
-          - name: http
-            containerPort: 32400
-          - name: https
-            containerPort: 32443
         env:
         - name: TZ
           value: "America/New_York"

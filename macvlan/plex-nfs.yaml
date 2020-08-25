@@ -15,7 +15,7 @@ spec:
     storage: 1Gi
   nfs:
     path: /plex/config
-    server: 172.16.1.6
+    server: 192.168.11.201
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: "v1"
@@ -42,10 +42,10 @@ spec:
   accessModes:
     - ReadWriteMany
   capacity:
-    storage: 250Gi
+    storage: 100Gi
   nfs:
     path: /plex/media
-    server: 172.16.1.6
+    server: 192.168.11.201
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: "v1"
@@ -58,7 +58,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 250Gi
+      storage: 100Gi
   storageClassName: ""
   volumeMode: Filesystem
 

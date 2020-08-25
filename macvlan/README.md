@@ -22,27 +22,18 @@ A. Setting up your networking, I have to leave that mostly to you; however, I ha
 ---
 ## The MACVLAN Setup
 
-> This configuration is used to set a static IP of 192.168.11.200 for the plex-pod, assigned to a separate interface (ens224) and not the default (ens192) used for the nodes / vxlan themselves. My setup is OCP 4.5 on VMware vSphere/ESXi 7.
+> This configuration is used to set a DHCP RANGE of 192.168.11.220-230 for a separate interface (ens224) and not the default (ens192) used for the nodes / vxlan themselves. My setup is OCP 4.5 on VMware vSphere/ESXi 6.7.
 
-1. Install the macvlan addition network. \
-`oc edit networks.operator.openshift.io cluster`
+1. Create the Network Assignment Definition in the default namespace. \
+`oc create -f network-ad.yaml`
 
-```
-  additionalNetworks:
-  - name: macvlan-plex
-    namespace: default
-    rawCNIConfig: '{ "cniVersion": "0.3.1", "name": "plex", "master": "ens224", "type":
-      "macvlan", "ipam": { "type": "static", "addresses": [ { "address": "192.168.11.200/24",
-      "gateway": "192.168.11.1" } ] } }'
-    type: Raw
-```
   *ens224 is a newly added secondary NIC assigned to my worker nodes.*
 
 2. Verify the new network exists in the default namespace. \
 `oc get network-attachment-definitions -n default` 
 
 3. Verify the settings. \
-`oc describe network-attachment-definitions macvlan-plex -n default`
+`oc describe network-attachment-definitions macvlan -n default`
 
 4. Create the Plex namespace. \
 `oc create ns plex`
@@ -61,22 +52,22 @@ A. Setting up your networking, I have to leave that mostly to you; however, I ha
 
 ```
 4: net1@if109: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue state UP 
-    inet 192.168.11.27/24 brd 192.168.11.255 scope global net1
+    inet 192.168.11.220/24 brd 192.168.11.255 scope global net1
 ```
-- ping 192.168.11.200
+- ping 192.168.11.220
 
 9. With a successful ping, remove the test pod to prevent an IP conflict. \
 `oc -n plex delete -f test-pod.yaml`
 
+>Optional: Create a nfs share for your /media and /config \
+`oc -n plex create -f plex-nfs.yaml`
+
 10. Create the Deploymnet. \
 `oc -n plex create -f plex-deployment.yaml`
 
->Optional: Create a nfs share for your /media and /config \
-`oc -n plex create -f plex-nfs`
-
 *Since you are using MACVLAN, Services and Routes are not required.*
 
-11. Access your plex server for management: 192.168.11.200:32400/manage
+11. Access your plex server for management: https://192.168.11.220:32400/manage
 
 
 ---
@@ -101,3 +92,17 @@ Notes:
     d. ifconfig ens224 10.10.10.10/29 
     e. sudo systemctl restart NetworkManager
     ```
+
+Legacy network to hardset the POD IP, this is not very flexible. \
+Install the macvlan addition network. \
+`oc edit networks.operator.openshift.io cluster`
+
+```
+  additionalNetworks:
+  - name: macvlan-plex
+    namespace: default
+    rawCNIConfig: '{ "cniVersion": "0.3.1", "name": "plex", "master": "ens224", "type":
+      "macvlan", "ipam": { "type": "static", "addresses": [ { "address": "192.168.11.200/24",
+      "gateway": "192.168.11.1" } ] } }'
+    type: Raw
+```
